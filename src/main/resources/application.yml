@@ -1,0 +1,54 @@
+name: spring-test
+
+server:
+  port: 8086
+  contextPath:
+
+druid:
+  url: jdbc:mariadb://localhost:3306/phuag
+  username: root
+  password: 123456
+  initialSize: 1
+  minIdle: 3
+  maxActive: 20
+  maxWait: 60000
+  validationQuery: SELECT 'x' FROM DUAL
+
+mybatis:
+  mapperLocations:
+    - classpath*:sqlmap/*Mapper.xml
+mapper:
+  mappers: com.phuag.sample.common.persistence.BaseDao
+
+pagehlper:
+  reasonable: true
+  params: count-countSql
+
+shiro:
+  realmClass: com.phuag.sample.common.security.shiro.UserPasswordDBRealm
+  loginUrl: /main.html#/login
+  successUrl: /main.html#/main
+  unauthorizedUrl: /main.html#/404
+  filterChainDefinitions:
+     /bower_components/**: anon
+     /js/**: anon
+     /css/**: anon
+     /images/**: anon
+     /partials/**: anon
+     /i18n/**: anon
+     /api/ping: anon
+     /main.html#/register: anon
+     /main.html#/login: authcBasic
+     /api/me: authcBasic
+     /api/logout: logout
+     /api/**: user
+     /main.html#/**: user
+
+logging:
+  file: app.log
+  maxFileSize: 10KB
+  level:
+    root: INFO
+    org.springfamework.web: INFO
+    com.phuag.sample: DEBUG
+    com.alibaba.druid: DEBUG
